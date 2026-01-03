@@ -1,7 +1,8 @@
-import LoginCard from "./utils/auth/LoginCard.jsx";
-import AppLayout from "./components/layout/AppLayout.jsx";
-import Dashboard from "./features/dashboard.jsx";
-import DotGrid from "./utils/background/dotgrid.jsx";
+import { useState } from "react";
+import LoginCard from "./utils/auth/LoginCard";
+import AppLayout from "./components/layout/AppLayout";
+import Dashboard from "./features/dashboard";
+import DotGrid from "./utils/background/dotgrid";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

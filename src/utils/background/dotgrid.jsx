@@ -27,14 +27,14 @@ function hexToRgb(hex) {
 }
 
 const DotGrid = ({
-  dotSize = 2, // Made smaller for a cleaner look
+  dotSize = 4, // Made smaller for a cleaner look
   gap = 25, // Wider gap for better performance
-  baseColor = "#ffffff", // Default to white so it is visible on dark backgrounds
+  baseColor = "#000000", // Default to white so it is visible on dark backgrounds
   activeColor = "#6366f1", // Indigo on hover
   proximity = 100,
   shockRadius = 150,
   shockStrength = 10,
-  returnDuration = 1, // Faster return
+  returnDuration = 2, // Faster return
   className = "",
   style,
 }) => {
