@@ -16,16 +16,19 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  // NOT LOGGED IN → simple, clean login screen with DotGrid background
+  // NOT LOGGED IN → glass morphism login with animated DotGrid
   if (!isLoggedIn) {
     return (
-      <div className="relative min-h-screen bg-slate-50 flex items-center justify-center p-4 overflow-hidden">
+      <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4 overflow-hidden">
         <DotGrid
-          baseColor="#e2e8f0" // slate-200 for subtle look on slate-50
-          activeColor="#6366f1" // indigo-500 for interaction
+          baseColor="#cbd5e1" // slightly darker for better visibility
+          activeColor="#6366f1"
           gap={30}
-          dotSize={2}
-          className="opacity-60"
+          dotSize={3s}
+          proximity={150}
+          pushRadius={100}
+          pushStrength={15}
+          className="z-0"
         />
         <LoginCard onLogin={handleLogin} />
       </div>
