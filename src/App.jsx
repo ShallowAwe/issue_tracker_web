@@ -24,7 +24,7 @@ function App() {
           baseColor="#cbd5e1" // slightly darker for better visibility
           activeColor="#6366f1"
           gap={30}
-          dotSize={3s}
+          dotSize={3}
           proximity={150}
           pushRadius={100}
           pushStrength={15}
