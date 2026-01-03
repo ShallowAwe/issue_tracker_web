@@ -27,7 +27,7 @@ function hexToRgb(hex) {
 }
 
 const DotGrid = ({
-  dotSize = 6, // Made smaller for a cleaner look
+  dotSize = 10, // Made smaller for a cleaner look
   gap = 15, // Wider gap for better performance
   baseColor = "#262626", // Default to white so it is visible on dark backgrounds
   activeColor = "#6366f1", // Indigo on hover
