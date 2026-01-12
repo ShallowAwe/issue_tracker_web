@@ -11,7 +11,7 @@ const AppLayout = ({ children }) => {
         <div className="max-w-7xl mx-auto p-8">{children}</div>
 
         {/* Custom Scrollbar Styles for this container */}
-        <style jsx>{`
+        <style>{`
           main::-webkit-scrollbar {
             width: 8px;
           }

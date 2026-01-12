@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux"; // Import Redux hooks
+import { logout } from "../../store/slices/authSlice"; // Import logout action
 import {
   LayoutDashboard,
   KanbanSquare,
@@ -13,15 +15,26 @@ import {
 } from "lucide-react";
 
 const Sidebar = () => {
-  const [activeTab, setActiveTab] = useState("Dashboard");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch(); // Get dispatch function from Redux
+
+  // Get user data from Redux store (optional - for displaying user info)
+  const user = useSelector((state) => state.auth.user);
+
+  // Handle logout by dispatching Redux action
+  const handleLogout = () => {
+    dispatch(logout()); // Clear auth state in Redux
+    navigate("/"); // Redirect to login page
+  };
 
   const menuItems = [
-    { name: "Dashboard", icon: LayoutDashboard },
-    { name: "My Issues", icon: ListTodo, badge: 3 }, // Added a mock badge
+    { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
+    { name: "My Issues", icon: ListTodo, badge: 3, path: "/issues" },
     { name: "Board", icon: KanbanSquare },
     { name: "Backlog", icon: FolderGit2 },
     { name: "Reports", icon: BarChart2 },
-    { name: "Team", icon: Users },
+    { name: "Team", icon: Users, path: "/teams" },
   ];
 
   return (
@@ -65,15 +78,18 @@ const Sidebar = () => {
         </p>
 
         {menuItems.map((item) => {
-          const isActive = activeTab === item.name;
+          const isActive = item.path && location.pathname === item.path;
           return (
             <button
               key={item.name}
-              onClick={() => setActiveTab(item.name)}
+              onClick={() => item.path && navigate(item.path)}
+              disabled={!item.path}
               className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium text-left transition-all duration-200 group ${
                 isActive
                   ? "bg-indigo-50 text-indigo-700 shadow-sm ring-1 ring-indigo-100"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  : item.path
+                  ? "text-gray-600 hover:bg-gray-50 hover:text-gray-900 cursor-pointer"
+                  : "text-gray-400 cursor-not-allowed opacity-60"
               }`}
             >
               <div className="flex items-center gap-3">
@@ -82,7 +98,9 @@ const Sidebar = () => {
                   className={
                     isActive
                       ? "text-indigo-600"
-                      : "text-gray-400 group-hover:text-gray-600"
+                      : item.path
+                      ? "text-gray-400 group-hover:text-gray-600"
+                      : "text-gray-300"
                   }
                 />
                 {item.name}
@@ -124,15 +142,21 @@ const Sidebar = () => {
             />
             <div className="overflow-hidden">
               <p className="text-sm font-semibold text-gray-700 truncate">
-                Alex Developer
+                {/* Display user name from Redux if available, otherwise default */}
+                {user?.name || "Alex Developer"}
               </p>
               <p className="text-[10px] font-medium text-gray-500 truncate">
-                alex@company.com
+                {/* Display user email from Redux if available, otherwise default */}
+                {user?.email || "alex@company.com"}
               </p>
             </div>
           </div>
 
-          <button className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+          {/* Logout button - dispatches Redux logout action */}
+          <button
+            onClick={handleLogout}
+            className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+          >
             <LogOut size={16} />
           </button>
         </div>

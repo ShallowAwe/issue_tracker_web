@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux"; // Import Redux dispatch hook
+import { loginSuccess } from "../../store/slices/authSlice"; // Import login action
+import { login } from "../../apis/authService";
 
-const LoginCard = ({ onLogin }) => {
-  const [email, setEmail] = useState("");
+const LoginCard = () => {
+  const dispatch = useDispatch(); // Get dispatch function from Redux
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -10,23 +14,27 @@ const LoginCard = ({ onLogin }) => {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
-      setError("Email and password are required.");
+    if (!username || !password) {
+      setError("Username and password are required.");
       return;
     }
 
     try {
       setLoading(true);
-      await onLogin({ email, password });
+      // Call login API
+      const data = await login({ username, password });
+
+      // Dispatch Redux action to update global auth state
+      dispatch(loginSuccess({ user: data.user, token: data.token }));
     } catch (err) {
-      setError(err?.message || "Authentication failed. Please try again.");
+      setError(err?.message || "Authentication failed.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-full max-w-md px-6 z-100">
+    <div className="w-full max-w-md px-6 z-50">
       <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-8">
         {/* Header */}
         <div className="mb-8 text-center">
@@ -41,18 +49,18 @@ const LoginCard = ({ onLogin }) => {
         <form onSubmit={handleSubmit} className="space-y-5" noValidate>
           <div>
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block text-xs font-medium uppercase tracking-wide text-gray-600 mb-1"
             >
-              Work Email
+              Work username
             </label>
             <input
-              id="email"
-              type="email"
+              id="username"
+              type="text"
               autoComplete="username"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none text-gray-900"
               placeholder="name@company.com"
               aria-invalid={!!error}
