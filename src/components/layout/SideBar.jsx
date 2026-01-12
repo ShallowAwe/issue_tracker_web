@@ -37,7 +37,7 @@ const Sidebar = () => {
           </h1>
         </div>
 
-        <button className="w-full flex items-center justify-between px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-100 transition-colors group">
+        {/* <button className="w-full flex items-center justify-between px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-100 transition-colors group">
           <div className="flex items-center gap-2 overflow-hidden">
             <div className="w-5 h-5 rounded bg-white border border-gray-200 text-indigo-600 flex items-center justify-center text-xs font-bold shadow-sm">
               P
@@ -47,7 +47,7 @@ const Sidebar = () => {
             </span>
           </div>
           <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />
-        </button>
+        </button> */}
       </div>
 
       {/* Primary Action */}

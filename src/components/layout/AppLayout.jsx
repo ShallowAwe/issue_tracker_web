@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "./SideBar.jsx";
+import Sidebar from "./SideBar";
 const AppLayout = ({ children }) => {
   return (
     <div className="flex min-h-screen bg-slate-50 text-gray-900 font-sans">

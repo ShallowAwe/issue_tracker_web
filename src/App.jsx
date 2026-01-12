@@ -1,14 +1,14 @@
 import { useState } from "react";
 import LoginCard from "./utils/auth/LoginCard";
 import AppLayout from "./components/layout/AppLayout";
-import Dashboard from "./features/dashboard";
+import Dashboard from "./features/overview/OverViewScreen";
 import DotGrid from "./utils/background/dotgrid";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleLogin = (credentials) => {
+    // credentials are { email, password }
     setIsLoggedIn(true);
   };
 
@@ -35,7 +35,6 @@ function App() {
     );
   }
 
-  // LOGGED IN → full app shell
   return (
     <AppLayout>
       <Dashboard onLogout={handleLogout} />
