@@ -1,22 +1,38 @@
-import apiClient from "./axiosConfig"; // Use configured axios instance
+import apiClient from "./axiosConfig";
 import { ENDPOINTS } from "../constants/apiConstants";
 
-console.log("Auth endpoints:", ENDPOINTS.AUTH);
+/**
+ * Normalizes all API errors into a predictable shape.
+ * UI and Redux should rely ONLY on this contract.
+ */
+const normalizeError = (err, fallbackMessage) => {
+  return {
+    message:
+      err?.response?.data?.message || err?.response?.data || fallbackMessage,
+    status: err?.response?.status || 500,
+  };
+};
 
-// Login function - authenticates user and returns JWT token
+/**
+ * Login user
+ * @returns { token, user }
+ */
 export const login = async ({ username, password }) => {
   try {
-    const response = await apiClient.post(ENDPOINTS.AUTH.LOGIN, {
+    const { data } = await apiClient.post(ENDPOINTS.AUTH.LOGIN, {
       username,
       password,
     });
-    return response.data; // Returns { token, userId }
+    return data;
   } catch (err) {
-    throw err.response?.data || "Login failed";
+    throw normalizeError(err, "Login failed");
   }
 };
 
-// Register function - creates new user and returns JWT token
+/**
+ * Register new user
+ * @returns { token, user }
+ */
 export const register = async ({
   username,
   email,
@@ -25,15 +41,28 @@ export const register = async ({
   lastName,
 }) => {
   try {
-    const response = await apiClient.post(ENDPOINTS.AUTH.REGISTER, {
+    const { data } = await apiClient.post(ENDPOINTS.AUTH.REGISTER, {
       username,
       email,
       password,
       firstName,
       lastName,
     });
-    return response.data; // Returns { token, userId }
+    return data;
   } catch (err) {
-    throw err.response?.data || "Registration failed";
+    throw normalizeError(err, "Registration failed");
+  }
+};
+
+/**
+ * Fetch authenticated user details
+ * Requires valid JWT (handled by axios interceptor)
+ */
+export const getUserDetails = async () => {
+  try {
+    const { data } = await apiClient.get(ENDPOINTS.AUTH.USER_DETAILS);
+    return data;
+  } catch (err) {
+    throw normalizeError(err, "Failed to fetch user details");
   }
 };

@@ -5,6 +5,7 @@ export const ENDPOINTS = Object.freeze({
   AUTH: {
     LOGIN: "/api/auth/login",
     REGISTER: "/api/auth/register",
+    USER_DETAILS: "/api/auth/user-details",
   },
 
   // Projects

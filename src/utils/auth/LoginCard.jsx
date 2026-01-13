@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux"; // Import Redux dispatch hook
 import { loginSuccess } from "../../store/slices/authSlice"; // Import login action
-import { login } from "../../apis/authService";
+import { login, getUserDetails } from "../../apis/authService";
+import { setUserDetails } from "../../store/slices/userDetailsSlice";
 
 const LoginCard = () => {
   const dispatch = useDispatch(); // Get dispatch function from Redux
@@ -26,6 +27,10 @@ const LoginCard = () => {
 
       // Dispatch Redux action to update global auth state
       dispatch(loginSuccess({ user: data.user, token: data.token }));
+
+      // Fetch and store user details in Redux
+      const userDetails = await getUserDetails();
+      dispatch(setUserDetails(userDetails));
     } catch (err) {
       setError(err?.message || "Authentication failed.");
     } finally {

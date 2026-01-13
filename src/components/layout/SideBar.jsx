@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"; // Import Redux hooks
 import { logout } from "../../store/slices/authSlice"; // Import logout action
+import { clearUserDetails } from "../../store/slices/userDetailsSlice"; // Import clear user details action
 import {
   LayoutDashboard,
   KanbanSquare,
@@ -19,12 +20,14 @@ const Sidebar = () => {
   const location = useLocation();
   const dispatch = useDispatch(); // Get dispatch function from Redux
 
-  // Get user data from Redux store (optional - for displaying user info)
-  const user = useSelector((state) => state.auth.user);
+  // Get user details from Redux store
+  const userDetails = useSelector((state) => state.userDetails);
 
-  // Handle logout by dispatching Redux action
+  // Handle logout by dispatching Redux actions
   const handleLogout = () => {
     dispatch(logout()); // Clear auth state in Redux
+    dispatch(clearUserDetails()); // Clear user details in Redux
+    localStorage.removeItem("token"); // Clear token from localStorage
     navigate("/"); // Redirect to login page
   };
 
@@ -143,11 +146,15 @@ const Sidebar = () => {
             <div className="overflow-hidden">
               <p className="text-sm font-semibold text-gray-700 truncate">
                 {/* Display user name from Redux if available, otherwise default */}
-                {user?.name || "Alex Developer"}
+                {userDetails.isLoaded
+                  ? `${userDetails.firstName || ""} ${
+                      userDetails.lastName || ""
+                    }`.trim() || userDetails.username
+                  : "Loading..."}
               </p>
               <p className="text-[10px] font-medium text-gray-500 truncate">
                 {/* Display user email from Redux if available, otherwise default */}
-                {user?.email || "alex@company.com"}
+                {userDetails.isLoaded ? userDetails.email : ""}
               </p>
             </div>
           </div>
